@@ -8,7 +8,7 @@ local turntowhich = GetModConfigData("turntowhich")
 local function OnDropped(inst)
     if inst.components.inventoryitem and inst.components.inventoryitem.owner == nil then
         if inst.turntask == nil then
-            inst.turntask = inst:DoTaskInTime(10, function(inst)
+            inst.turntask = inst:DoTaskInTime(daystoturn, function(inst)
                 local x, y, z = inst.Transform:GetWorldPosition()
                 inst:Remove()
                 GLOBAL.SpawnPrefab(turntowhich).Transform:SetPosition(x, y, z)
