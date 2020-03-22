@@ -10,6 +10,10 @@ So the mod was developed to make that happen again.
 
 ## Changelog
 
+**Version 1.2.0**
+
+- Now Abigial Flower cannot turn into flower in the same position(the same as the old version).
+
 **Version 1.1.0**
 
 - Use the component of "timer" instead of "DoTaskInTime" so that the Abigail Flower decay time will continue after server reboot.

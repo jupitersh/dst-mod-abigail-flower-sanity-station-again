@@ -2,7 +2,7 @@ name = "Abigail Flower Sanity Station Again"
 description = "Turn the Abigail Flower into Flower or even Evil Flower."
 forumthread = ""
 author = "辣椒小皇纸"
-version = "1.1.0"
+version = "1.2.0"
 api_version = 10
 dont_starve_compatible = false
 reign_of_giants_compatible = false
@@ -42,7 +42,7 @@ configuration_options =
                         {description = "Evil Flower 恶魔花", data = "flower_evil", hover = ""},
                     },
         default = "flower",
-    }
+    },
     {
         name = "evilflowerprotection",
         label = "Evil Flower Protection",

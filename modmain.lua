@@ -4,7 +4,7 @@ end
 
 local GROUND = GLOBAL.GROUND
 
-local daystoturn = 10 --GetModConfigData("daystoturn") * 480
+local daystoturn = GetModConfigData("daystoturn") * 480
 local turntowhich = GetModConfigData("turntowhich")
 
 local function CheckTile(tile)
@@ -28,11 +28,7 @@ local function CheckTile(tile)
 end
 
 local  function OnDropped(inst)
-    local x, y, z = inst.Transform:GetWorldPosition()
-    local tile = GLOBAL.TheWorld.Map:GetTileAtPoint(x, y, z)
-    if CheckTile(tile) then
-        inst.components.timer:StartTimer("turntoflower", daystoturn)
-    end
+    inst.components.timer:StartTimer("turntoflower", daystoturn)
 end
 
 local function OnPickup(inst)
@@ -42,8 +38,24 @@ end
 local function OnTimerDone(inst)
     if inst.components.inventoryitem and inst.components.inventoryitem.owner == nil then
         local x, y, z = inst.Transform:GetWorldPosition()
+        local tile = GLOBAL.TheWorld.Map:GetTileAtPoint(x, y, z)
+        if CheckTile(tile) then
+            local entity_list = TheSim:FindEntities(x, y, z, 0.74)
+            local nearflower = false
+            for k, entity in pairs(entity_list) do
+                if entity.prefab == "flower" or entity.prefab == "flower_evil" then
+                    nearflower = true
+                end
+            end
+            if nearflower then
+                GLOBAL.SpawnPrefab("petals").Transform:SetPosition(x, y, z)
+            else
+                GLOBAL.SpawnPrefab(turntowhich).Transform:SetPosition(x, y, z)
+            end
+        else
+            GLOBAL.SpawnPrefab("petals").Transform:SetPosition(x, y, z)
+        end
         inst:Remove()
-        GLOBAL.SpawnPrefab(turntowhich).Transform:SetPosition(x, y, z)
     end
 end
 
@@ -53,11 +65,7 @@ local function Turn2Flower(inst)
     if inst.components and inst.components.inventoryitem then
         inst.components.inventoryitem:SetOnPutInInventoryFn(OnPickup)
         if inst.components.inventoryitem.owner == nil then
-            local x, y, z = inst.Transform:GetWorldPosition()
-            local tile = GLOBAL.TheWorld.Map:GetTileAtPoint(x, y, z)
-            if CheckTile(tile) then
-                inst.components.timer:StartTimer("turntoflower", daystoturn)
-            end
+            inst.components.timer:StartTimer("turntoflower", daystoturn)
         end
     end
     inst:ListenForEvent("timerdone", OnTimerDone)
